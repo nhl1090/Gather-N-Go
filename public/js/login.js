@@ -13,6 +13,8 @@ const loginFormHandler = async (event) => {
         headers: { 'Content-Type': 'application/json' },
       });
 
+      const data = await response.json();
+
       if (response.ok) {
         if (rememberMe) {
           localStorage.setItem('rememberedLogin', login);
@@ -21,10 +23,13 @@ const loginFormHandler = async (event) => {
           localStorage.removeItem('rememberedLogin');
           localStorage.removeItem('rememberedPassword');
         }
-        document.location.replace('/dashboard');
+        if (data.redirect) {
+          window.location.href = data.redirect;
+        } else {
+          window.location.href = '/dashboard';
+        }
       } else {
-        const errorData = await response.json();
-        alert(errorData.message || 'Failed to log in');
+        alert(data.message || 'Failed to log in');
       }
     } catch (error) {
       console.error('Login error:', error);
@@ -59,9 +64,9 @@ const signupFormHandler = async (event) => {
 
       if (response.ok) {
         if (data.redirect) {
-          document.location.replace(data.redirect);
+          window.location.href = data.redirect;
         } else {
-          document.location.replace('/dashboard');
+          window.location.href = '/dashboard';
         }
       } else {
         if (data.errors) {
