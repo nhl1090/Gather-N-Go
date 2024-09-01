@@ -7,7 +7,6 @@ const helpers = require('./utils/helpers');
 const errorHandler = require('./middleware/errorHandler');
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
-const { User, Event } = require('./models'); // Import the User and Event models
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -16,11 +15,11 @@ const PORT = process.env.PORT || 3001;
 const hbs = exphbs.create({ helpers });
 
 const sess = {
-  secret: 'Super secret secret',
+  secret: process.env.SESSION_SECRET || 'Super secret secret',
   cookie: {
     maxAge: 300000,
     httpOnly: true,
-    secure: false,
+    secure: process.env.NODE_ENV === 'production',
     sameSite: 'strict',
   },
   resave: false,
@@ -47,15 +46,13 @@ app.use(routes);
 app.use(errorHandler);
 
 // Sync the database models
-sequelize.sync({ force: false }).then(async () => {
-  // Ensure User model is synced first
-  await User.sync();
-  
-  // Then sync Event model
-  await Event.sync();
-
+sequelize.sync({ force: false }).then(() => {
   app.listen(PORT, () => {
     console.log(`Now listening on port ${PORT}`);
-    console.log(`Click here to open: http://localhost:${PORT}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`Click here to open: http://localhost:${PORT}`);
+    }
   });
+}).catch(err => {
+  console.error('Unable to sync database:', err);
 });
