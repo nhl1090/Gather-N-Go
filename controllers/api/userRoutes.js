@@ -8,14 +8,13 @@ const path = require('path');
 const { Op } = require('sequelize');
 const fs = require('fs');
 
-
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads/') // Store uploads in a public directory
+    cb(null, 'public/uploads/'); // Store uploads in a public directory
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)) // Append timestamp to filename
+    cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to filename
   }
 });
 
@@ -34,14 +33,14 @@ router.get('/', async (req, res) => {
   }
 });
 
-// GET a single user
+// GET a single user by ID
 router.get('/:id', async (req, res) => {
   try {
     const userData = await User.findByPk(req.params.id, {
       attributes: { exclude: ['password'] }
     });
     if (!userData) {
-      return res.status(404).json({ message: 'No user found with this id!' });
+      return res.status(404).json({ message: 'No user found with this ID!' });
     }
     res.status(200).json(userData);
   } catch (err) {
@@ -61,7 +60,7 @@ router.post('/', [
   if (!errors.isEmpty()) {
     return res.status(400).json({ errors: errors.array() });
   }
-  
+
   try {
     const userData = await User.create({
       username: req.body.username,
@@ -103,10 +102,12 @@ router.post('/login', [
     if (!userData) {
       return res.status(400).json({ message: 'Incorrect email/username or password, please try again' });
     }
+
     const validPassword = await userData.checkPassword(req.body.password);
     if (!validPassword) {
       return res.status(400).json({ message: 'Incorrect email/username or password, please try again' });
     }
+
     req.session.save(() => {
       req.session.user_id = userData.id;
       req.session.logged_in = true;
@@ -153,7 +154,7 @@ router.put('/bio', withAuth, [
     );
 
     if (updatedRows === 0) {
-      return res.status(404).json({ message: 'No user found with this id!' });
+      return res.status(404).json({ message: 'No user found with this ID!' });
     }
 
     res.status(200).json({ message: 'Bio updated successfully' });
@@ -178,7 +179,7 @@ router.post('/profile-picture', withAuth, upload.single('profile-pic'), async (r
     );
 
     if (updatedRows === 0) {
-      return res.status(404).json({ message: 'No user found with this id!' });
+      return res.status(404).json({ message: 'No user found with this ID!' });
     }
 
     res.status(200).json({ message: 'Profile picture updated successfully', profile_picture: profilePicturePath });
