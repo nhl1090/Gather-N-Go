@@ -11,10 +11,10 @@ const fs = require('fs');
 // Configure multer for file uploads
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, 'public/uploads/'); // Store uploads in a public directory
+    cb(null, 'public/uploads/');
   },
   filename: function (req, file, cb) {
-    cb(null, Date.now() + path.extname(file.originalname)); // Append timestamp to filename
+    cb(null, Date.now() + path.extname(file.originalname));
   }
 });
 
@@ -130,9 +130,10 @@ router.post('/login', [
           id: userData.id,
           username: userData.username,
           email: userData.email,
-          profile_picture: userData.profile_picture // Include profile picture URL
+          profile_picture: userData.profile_picture
         }, 
-        message: 'You are now logged in!' 
+        message: 'You are now logged in!',
+        redirect: '/dashboard'
       });
     });
   } catch (err) {
