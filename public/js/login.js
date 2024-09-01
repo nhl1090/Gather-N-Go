@@ -55,11 +55,20 @@ const signupFormHandler = async (event) => {
         headers: { 'Content-Type': 'application/json' },
       });
 
+      const data = await response.json();
+
       if (response.ok) {
-        document.location.replace('/dashboard');
+        if (data.redirect) {
+          document.location.replace(data.redirect);
+        } else {
+          document.location.replace('/dashboard');
+        }
       } else {
-        const errorData = await response.json();
-        alert(errorData.message || 'Failed to sign up');
+        if (data.errors) {
+          alert(data.errors.map(error => error.msg).join('\n'));
+        } else {
+          alert(data.message || 'Failed to sign up');
+        }
       }
     } catch (error) {
       console.error('Signup error:', error);
