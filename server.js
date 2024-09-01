@@ -7,6 +7,7 @@ const helpers = require('./utils/helpers');
 const errorHandler = require('./middleware/errorHandler');
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
+const { User, Event } = require('./models'); // Import the User and Event models
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -25,8 +26,8 @@ const sess = {
   resave: false,
   saveUninitialized: true,
   store: new SequelizeStore({
-    db: sequelize
-  })
+    db: sequelize,
+  }),
 };
 
 app.use(session(sess));
@@ -39,14 +40,20 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-
 // Use routes
 app.use(routes);
 
 // Error handling middleware
 app.use(errorHandler);
 
-sequelize.sync({ force: false }).then(() => {
+// Sync the database models
+sequelize.sync({ force: false }).then(async () => {
+  // Ensure User model is synced first
+  await User.sync();
+  
+  // Then sync Event model
+  await Event.sync();
+
   app.listen(PORT, () => {
     console.log(`Now listening on port ${PORT}`);
     console.log(`Click here to open: http://localhost:${PORT}`);
