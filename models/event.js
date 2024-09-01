@@ -1,6 +1,5 @@
 const { Model, DataTypes } = require('sequelize');
 const sequelize = require('../config/connection');
-const User = require('./User'); // Import the User model
 
 class Event extends Model {}
 
@@ -31,10 +30,9 @@ Event.init(
     user_id: {
       type: DataTypes.INTEGER,
       references: {
-        model: 'User', // Ensure this matches the model name
+        model: 'user',
         key: 'id',
       },
-      onDelete: 'CASCADE', // Add cascading delete
     },
   },
   {
@@ -42,12 +40,8 @@ Event.init(
     timestamps: true,
     freezeTableName: true,
     underscored: true,
-    modelName: 'Event',
+    modelName: 'event',
   }
 );
-
-// Association
-Event.belongsTo(User, { foreignKey: 'user_id', onDelete: 'CASCADE' });
-User.hasMany(Event, { foreignKey: 'user_id' });
 
 module.exports = Event;
