@@ -1,0 +1,92 @@
+<div class="dashboard-container">
+  <h2>Welcome, {{username}}!</h2>
+
+  <div class="dashboard-section">
+    <h3>Your Profile</h3>
+    {{#if profile_picture}}
+      <img src="/{{profile_picture}}" alt="Profile Picture" class="profile-pic">
+    {{else}}
+      <p>No profile picture uploaded yet.</p>
+    {{/if}}
+    <form class="form upload-form" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="profile-pic">Upload Profile Picture:</label>
+        <input type="file" id="profile-pic" name="profile-pic" accept="image/*">
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </div>
+    </form>
+    
+    <form class="form bio-form">
+      <div class="form-group">
+        <label for="user-bio">Your Bio:</label>
+        <textarea id="user-bio" name="bio" rows="4">{{bio}}</textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Update Bio</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="dashboard-section">
+    <h3>Create a New Event</h3>
+    <form class="form new-event-form">
+      <div class="form-group">
+        <label for="event-title">Event Title:</label>
+        <input class="form-input" type="text" id="event-title" name="title" required />
+      </div>
+      <div class="form-group">
+        <label for="event-desc">Description:</label>
+        <textarea class="form-input" id="event-desc" name="description" required></textarea>
+      </div>
+      <div class="form-group">
+        <label for="event-date">Date:</label>
+        <input class="form-input" type="datetime-local" id="event-date" name="date" required />
+      </div>
+      <div class="form-group">
+        <label for="event-location">Location:</label>
+        <input class="form-input" type="text" id="event-location" name="location" required />
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Create Event</button>
+      </div>
+    </form>
+  </div>
+
+{{#if events.length}}
+<div class="dashboard-section">
+  <h3>Your Events</h3>
+  <div class="event-list">
+    {{#each events as |event|}}
+    <div class="event-item">
+      <h4>{{event.title}}</h4>
+      <p>{{event.description}}</p>
+      <p><strong>Date:</strong> {{format_date event.date}}</p>
+      <p><strong>Location:</strong> {{event.location}}</p>
+      <button class="btn btn-sm btn-primary edit-event" data-id="{{event.id}}">EDIT</button>
+      <button class="btn btn-sm btn-danger delete-event" data-id="{{event.id}}">DELETE</button>
+    </div>
+    {{/each}}
+  </div>
+</div>
+{{/if}}
+
+{{#if rsvp_events.length}}
+<div class="dashboard-section">
+  <h3>Events You're Attending</h3>
+  <div class="event-list">
+    {{#each rsvp_events as |event|}}
+    <div class="event-item">
+      <h4>{{event.title}}</h4>
+      <p><strong>Date:</strong> {{format_date event.date}}</p>
+      <p><strong>Location:</strong> {{event.location}}</p>
+      <a href="/event/{{event.id}}" class="btn btn-sm btn-info">View Event</a>
+    </div>
+    {{/each}}
+  </div>
+</div>
+{{/if}}
+</div>
+
+<script src="/js/dashboard.js"></script>

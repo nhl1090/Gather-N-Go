@@ -1,0 +1,493 @@
+/* General Styling */
+:root {
+    --primary-color: #5f7a7a;
+    --accent-color: #ff5c5c;
+    --accent-hover: #ff4a4a;
+    --text-color: #333;
+    --background-color: #f4f4f4;
+    --white: #fff;
+    --twitter-blue: #1DA1F2;
+    --facebook-blue: #1877F2;
+    --instagram-red: #E1306C;
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    line-height: 1.6;
+    color: var(--text-color);
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
+header {
+    background-color: var(--primary-color);
+    padding: 1rem;
+}
+
+.header-content {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo {
+    width: 180px;
+    height: auto;
+}
+
+.header-quote {
+    color: var(--white);
+    font-size: 1.2rem;
+    font-style: italic;
+    font-family: 'Georgia', serif;
+    text-align: center;
+    flex-grow: 1;
+    margin: 0 20px;
+}
+
+.header-actions {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+#search-form {
+    display: flex;
+    align-items: stretch;
+    height: 35px;
+    margin-right: 15px;
+}
+
+#search-input {
+    padding: 8px 12px;
+    border: 1px solid #ddd;
+    border-right: none;
+    border-radius: 4px 0 0 4px;
+    font-size: 14px;
+}
+
+#search-form button {
+    padding: 8px 12px;
+    background-color: var(--accent-color);
+    color: var(--white);
+    border: none;
+    border-radius: 0 4px 4px 0;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+#search-form button:hover {
+    background-color: var(--accent-hover);
+}
+
+.login-button,
+.home-icon,
+.profile-icon,
+.logout-icon {
+    color: var(--white);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.login-button:hover,
+.home-icon:hover,
+.profile-icon:hover,
+.logout-icon:hover {
+    opacity: 1;
+}
+
+.home-icon svg,
+.profile-icon svg,
+.logout-icon svg,
+.login-button svg {
+    width: 24px;
+    height: 24px;
+}
+
+.login-button {
+    display: inline-block;
+    color: var(--white);
+    text-decoration: none;
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+}
+
+.login-button:hover {
+    opacity: 1;
+}
+
+.login-button .key-icon {
+    width: 24px;
+    height: 24px;
+    transition: transform 0.3s ease;
+}
+
+.login-button:hover .key-icon {
+    transform: rotate(-45deg);
+}
+
+#logout {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+}
+
+/* Main Content Styling */
+main {
+    flex-grow: 1;
+    padding: 20px 0;
+}
+
+h1 {
+    text-align: center;
+    margin: 2rem 0;
+    color: var(--text-color);
+}
+
+/* Events Styling */
+.swiper-container {
+    width: 100%;
+    padding: 20px 0;
+}
+
+/* Event card styles */
+.event {
+    background-color: var(--white);
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    min-height: 300px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.event:hover {
+    transform: translateY(-5px);
+}
+
+.event h2 {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
+}
+
+.event-description {
+    flex-grow: 1;
+    margin-bottom: 1rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+}
+
+.event p {
+    margin-bottom: 0.5rem;
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.learn-more-btn {
+    text-decoration: none;
+    color: var(--white);
+    font-weight: bold;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    background-color: var(--accent-color);
+    transition: background-color 0.3s ease;
+    display: block;
+    text-align: center;
+    margin-top: auto;
+}
+
+.learn-more-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+/* Swiper navigation button styles */
+.swiper-button-next,
+.swiper-button-prev {
+    color: var(--accent-color);
+}
+
+/* Authentication Styling */
+.auth-container {
+    max-width: 400px;
+    margin: 40px auto;
+    padding: 20px;
+    background-color: var(--white);
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.auth-container h2 {
+    color: var(--primary-color);
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 24px;
+}
+
+.auth-form .form-group {
+    margin-bottom: 15px;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--text-color);
+    font-weight: bold;
+}
+
+.auth-form .form-input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.auth-form .btn-primary {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--accent-color);
+    color: var(--white);
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s;
+}
+
+.auth-form .btn-primary:hover {
+    background-color: var(--accent-hover);
+}
+
+.auth-link {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+.auth-link a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-weight: bold;
+}
+
+.auth-link a:hover {
+    text-decoration: underline;
+}
+
+/* Dashboard profile picture */
+.profile-pic {
+    max-width: 200px;
+    max-height: 200px;
+    object-fit: cover;
+    border-radius: 50%;
+}
+
+/* Footer Styling */
+footer {
+    background-color: var(--text-color);
+    color: var(--white);
+    text-align: center;
+    padding: 20px 10px;
+    margin-top: auto;
+}
+
+footer a {
+    text-decoration: none;
+    margin: 0 10px;
+    font-weight: bold;
+}
+
+footer a:hover {
+    text-decoration: underline;
+}
+
+.twitter-icon { color: var(--twitter-blue); }
+.facebook-icon { color: var(--facebook-blue); }
+.instagram-icon { color: var(--instagram-red); }
+
+/* Search Results Styling */
+.event-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.event-grid .event {
+    background-color: var(--white);
+    border: 1px solid #ddd;
+    padding: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease;
+}
+
+.event-grid .event:hover {
+    transform: translateY(-10px);
+}
+
+/* Responsive Design */
+@media screen and (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .logo-container {
+        margin-bottom: 10px;
+    }
+
+    .header-quote {
+        margin: 10px 0;
+    }
+
+    .header-actions {
+        width: 100%;
+        justify-content: flex-start;
+        margin-top: 10px;
+    }
+
+    #search-form {
+        flex-grow: 1;
+    }
+}
+
+@media screen and (max-width: 480px) {
+    .header-actions {
+        flex-wrap: wrap;
+    }
+
+    #search-form {
+        width: 100%;
+        margin-bottom: 10px;
+    }
+}
+
+/* New Event Details Styling */
+.event-details {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.event-details h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 20px;
+}
+
+.event-info {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.event-date-time, .event-location {
+    font-size: 1.1rem;
+}
+
+.event-date-time i, .event-location i {
+    margin-right: 5px;
+    color: var(--accent-color);
+}
+
+#map {
+    height: 300px;
+    margin-bottom: 20px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.event-description, .event-host {
+    margin-bottom: 20px;
+}
+
+.event-description h2, .event-host h2 {
+    font-size: 1.5rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+}
+
+.btn {
+    display: inline-block;
+    padding: 10px 20px;
+    margin-right: 10px;
+    border-radius: 5px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: background-color 0.3s ease;
+}
+
+.btn-primary {
+    background-color: var(--accent-color);
+    color: var(--white);
+}
+
+.btn-primary:hover {
+    background-color: var(--accent-hover);
+}
+
+.btn-secondary {
+    background-color: var(--background-color);
+    color: var(--text-color);
+    border: 1px solid var(--text-color);
+}
+
+.btn-secondary:hover {
+    background-color: var(--text-color);
+    color: var(--white);
+}
+
+/* Address Autocomplete Styling */
+#location-suggestions {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ddd;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 100%;
+    z-index: 1000;
+}
+
+#location-suggestions div {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#location-suggestions div:hover {
+    background-color: #f0f0f0;
+}

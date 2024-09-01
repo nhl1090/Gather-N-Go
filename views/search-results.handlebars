@@ -1,0 +1,17 @@
+<h1>Search Results for "{{searchTerm}}"</h1>
+
+{{#if events.length}}
+  <div class="event-grid">
+    {{#each events}}
+    <div class="event">
+      <h2>{{capitalize this.title}}</h2>
+      <p class="event-description">{{truncate this.description 100}}</p>
+      <p><strong>Location:</strong> {{this.location}}</p>
+      <p><strong>Date:</strong> {{format_date this.date}}</p>
+      <a href="/event/{{this.id}}" class="learn-more-btn">Learn More</a>
+    </div>
+    {{/each}}
+  </div>
+{{else}}
+  <p>No events found matching your search. <a href="/">Return to all events</a></p>
+{{/if}}
