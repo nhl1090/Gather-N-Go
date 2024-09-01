@@ -1,0 +1,26 @@
+<div class="edit-event-form">
+  <h2>Edit Event</h2>
+  <form id="edit-event-form" data-event-id="{{event.id}}">
+    <div class="form-group">
+      <label for="event-title">Event Title:</label>
+      <input class="form-input" type="text" id="event-title" name="title" value="{{event.title}}" required />
+    </div>
+    <div class="form-group">
+      <label for="event-desc">Description:</label>
+      <textarea class="form-input" id="event-desc" name="description" required>{{event.description}}</textarea>
+    </div>
+    <div class="form-group">
+      <label for="event-date">Date:</label>
+      <input class="form-input" type="datetime-local" id="event-date" name="date" value="{{format_date_for_input event.date}}" required />
+    </div>
+    <div class="form-group">
+      <label for="event-location">Location:</label>
+      <input class="form-input" type="text" id="event-location" name="location" value="{{event.location}}" required />
+    </div>
+    <div class="form-group">
+      <button type="submit" class="btn btn-primary">Update Event</button>
+    </div>
+  </form>
+</div>
+
+<script src="/js/edit-event.js"></script>

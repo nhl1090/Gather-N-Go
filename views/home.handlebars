@@ -1,0 +1,29 @@
+<h1>Events</h1>
+
+<div class="swiper-container">
+    <div class="swiper-wrapper">
+        {{#each events}}
+        <div class="swiper-slide">
+            <div class="event">
+                <h2>{{capitalize this.title}}</h2>
+                <p class="event-description">{{truncate this.description 100}}</p>
+                <p><strong>Location:</strong> {{this.location}}</p>
+                <p><strong>Date:</strong> {{format_date this.date}}</p>
+                <a href="/event/{{this.id}}" class="learn-more-btn">Learn More</a>
+            </div>
+        </div>
+        {{else}}
+        <div class="swiper-slide">
+            <div class="event no-events">
+                <p>No events found. Check back later for upcoming events!</p>
+            </div>
+        </div>
+        {{/each}}
+    </div>
+    <div class="swiper-pagination"></div>
+    <div class="swiper-button-next"></div>
+    <div class="swiper-button-prev"></div>
+</div>
+
+<script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+<script src="/js/swiper-init.js"></script>

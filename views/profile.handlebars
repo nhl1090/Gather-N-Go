@@ -1,0 +1,51 @@
+<div class="profile-container">
+  <h2>Welcome, {{username}}!</h2>
+
+  <div class="profile-section">
+    <h3>Your Profile</h3>
+    {{#if profile_picture}}
+      <img src="/{{profile_picture}}" alt="Profile Picture" class="profile-pic">
+    {{else}}
+      <p>No profile picture uploaded yet.</p>
+    {{/if}}
+    <form class="form upload-form" enctype="multipart/form-data">
+      <div class="form-group">
+        <label for="profile-pic">Upload Profile Picture:</label>
+        <input type="file" id="profile-pic" name="profile-pic" accept="image/*">
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Upload</button>
+      </div>
+    </form>
+    
+    <form class="form bio-form">
+      <div class="form-group">
+        <label for="user-bio">Your Bio:</label>
+        <textarea id="user-bio" name="bio" rows="4">{{bio}}</textarea>
+      </div>
+      <div class="form-group">
+        <button type="submit" class="btn btn-primary">Update Bio</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="profile-section">
+    <h3>Your RSVPs</h3>
+    {{#if rsvp_events.length}}
+      <ul class="rsvp-list">
+        {{#each rsvp_events as |event|}}
+          <li>
+            <h4>{{event.title}}</h4>
+            <p><strong>Date:</strong> {{format_date event.date}}</p>
+            <p><strong>Location:</strong> {{event.location}}</p>
+            <a href="/event/{{event.id}}" class="btn btn-info">View Event</a>
+          </li>
+        {{/each}}
+      </ul>
+    {{else}}
+      <p>You haven't RSVP'd to any events yet.</p>
+    {{/if}}
+  </div>
+</div>
+
+<script src="/js/profile.js"></script>
