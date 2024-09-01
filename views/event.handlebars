@@ -1,0 +1,35 @@
+<div class="event-details">
+  <h1>{{title}}</h1>
+  <div class="event-info">
+    <div class="event-date-time">
+      <i class="fas fa-calendar"></i> {{format_date date}}
+      <i class="fas fa-clock"></i> {{format_time date}}
+    </div>
+    <div class="event-location">
+      <i class="fas fa-map-marker-alt"></i> {{location}}
+    </div>
+  </div>
+  
+  <div id="map" style="height: 300px;"></div>
+  
+  <div class="event-description">
+    <h2>Description</h2>
+    <p>{{description}}</p>
+  </div>
+  
+  <div class="event-host">
+    <h2>Hosted by</h2>
+    <p>{{user.username}}</p>
+  </div>
+  
+  {{#if logged_in}}
+    <button class="btn btn-primary" id="rsvp-btn">RSVP to this event</button>
+  {{else}}
+    <p>Please <a href="/login">log in</a> to RSVP for this event.</p>
+  {{/if}}
+  
+  <a href="/" class="btn btn-secondary">Back to All Events</a>
+</div>
+
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+<script src="/js/event.js"></script>

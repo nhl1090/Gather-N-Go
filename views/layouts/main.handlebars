@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gather-N-Go - Connect with Local Events</title>
+    <meta name="description" content="Discover and join local events in your area with Gather-N-Go. Connect with your community today!">
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-container">
+                    <img src="/images/image.png" alt="Gather-N-Go Logo" class="logo">
+                </div>
+                <p class="header-quote">"Connecting Locals, One Event at a Time."</p>
+                <div class="header-actions">
+                    <form id="search-form" action="/search" method="GET" role="search">
+                        <input type="search" id="search-input" name="search" placeholder="Search events" required>
+                        <button type="submit">Search</button>
+                    </form>
+                    <a href="/" class="home-icon" aria-label="Go to homepage">
+                        <i class="fas fa-home"></i>
+                    </a>
+                    {{#if logged_in}}
+                    <a href="/dashboard" class="profile-icon" aria-label="Go to dashboard">
+                        <i class="fas fa-user"></i>
+                    </a>
+                    <button id="logout" class="logout-icon" aria-label="Logout">
+                        <i class="fas fa-sign-out-alt"></i>
+                    </button>
+                    {{else}}
+                    <a href="/login" class="login-button" aria-label="Log in">
+                        <i class="fas fa-key"></i>
+                    </a>
+                    {{/if}}
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            {{{ body }}}
+        </div>
+    </main>
+
+<footer>
+    <div class="container">
+        <nav>
+            <a href="https://x.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on X (formerly Twitter)">
+                <svg class="x-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" fill="white"/>
+                </svg>
+            </a>
+            <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Like us on Facebook">
+                <svg class="facebook-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Follow us on Instagram">
+                <svg class="instagram-icon" width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </a>
+        </nav>
+        <p>&copy; 2024 Gather-N-Go. All rights reserved.</p>
+    </div>
+</footer>
+
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"></script>
+    {{#if logged_in}}
+    <script src="/js/logout.js"></script>
+    {{/if}}
+</body>
+</html>
