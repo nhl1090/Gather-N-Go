@@ -51,10 +51,10 @@ router.get('/:id', async (req, res) => {
 
 // CREATE a new user
 router.post('/', [
-  body('username').trim().isLength({ min: 3 }).escape(),
-  body('email').isEmail().normalizeEmail(),
-  body('password').isLength({ min: 8 }),
-  body('bio').optional().trim().escape(),
+  body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
+  body('email').isEmail().withMessage('Please provide a valid email address'),
+  body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
+  body('bio').optional().trim(),
 ], async (req, res) => {
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
@@ -62,21 +62,35 @@ router.post('/', [
   }
 
   try {
+    const existingUser = await User.findOne({
+      where: {
+        [Op.or]: [
+          { username: req.body.username },
+          { email: req.body.email }
+        ]
+      }
+    });
+
+    if (existingUser) {
+      return res.status(400).json({ message: 'Username or email already exists' });
+    }
+
     const userData = await User.create({
       username: req.body.username,
       email: req.body.email,
       password: req.body.password,
       bio: req.body.bio || null,
-      profile_picture: null // Set to null initially, can be updated later
+      profile_picture: null
     });
+
     req.session.save(() => {
       req.session.user_id = userData.id;
       req.session.logged_in = true;
-      res.status(200).json({ user: userData, message: 'User created successfully' });
+      res.status(200).json({ user: userData, message: 'User created successfully', redirect: '/dashboard' });
     });
   } catch (err) {
     console.error('Error creating user:', err);
-    res.status(400).json({ message: 'Failed to create user', error: err.message });
+    res.status(500).json({ message: 'Server error while creating user', error: err.message });
   }
 });
 
