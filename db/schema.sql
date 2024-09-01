@@ -1,4 +1,4 @@
-DROP DATABASE IF EXISTS gatherngo;
-CREATE DATABASE gatherngo;
+DROP DATABASE IF EXISTS gatherngo_8d6t;
+CREATE DATABASE gatherngo_8d6t;
 
-\c gatherngo;
+\c gatherngo_8d6t;
