@@ -47,6 +47,14 @@ app.use(errorHandler);
 
 // Sync the database models
 sequelize.sync({ force: false }).then(() => {
+  sequelize.authenticate()
+  .then(() => {
+    console.log('Database connection established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
   app.listen(PORT, () => {
     console.log(`Now listening on port ${PORT}`);
     if (process.env.NODE_ENV !== 'production') {
