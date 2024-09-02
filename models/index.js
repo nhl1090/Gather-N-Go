@@ -26,4 +26,9 @@ Event.belongsToMany(User, {
   foreignKey: 'event_id',
 });
 
+RSVP.belongsTo(User, { foreignKey: 'user_id' });
+RSVP.belongsTo(Event, { foreignKey: 'event_id' });
+User.hasMany(RSVP, { foreignKey: 'user_id' });
+Event.hasMany(RSVP, { foreignKey: 'event_id' });
+
 module.exports = { User, Event, RSVP };

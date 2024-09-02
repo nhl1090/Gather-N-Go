@@ -33,6 +33,8 @@ router.post('/', withAuth, async (req, res) => {
 
 router.get('/user', withAuth, async (req, res) => {
   try {
+    console.log('User ID:', req.session.user_id);
+
     const userRSVPs = await RSVP.findAll({
       where: {
         user_id: req.session.user_id,
@@ -40,9 +42,17 @@ router.get('/user', withAuth, async (req, res) => {
       include: [{ model: Event }],
     });
 
+    console.log('RSVP Query Result:', userRSVPs);
+
+    if (!userRSVPs || userRSVPs.length === 0) {
+      console.warn('No RSVP events found for this user');
+    }
+
     res.status(200).json(userRSVPs);
   } catch (err) {
-    res.status(500).json(err);
+    console.error('Detailed Error:', err);
+    console.error('Error Stack Trace:', err.stack);  // Add stack trace logging
+    res.status(500).json({ message: 'Failed to fetch RSVP events', error: err.message });
   }
 });
 

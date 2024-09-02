@@ -2,8 +2,6 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.querySelector('.login-form');
   const signupForm = document.querySelector('.signup-form');
 
-  console.log('DOM content loaded');
-
   const loginFormHandler = async (event) => {
     event.preventDefault();
     console.log('Login form submitted');
