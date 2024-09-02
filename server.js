@@ -8,10 +8,6 @@ const errorHandler = require('./middleware/errorHandler');
 const sequelize = require('./config/connection');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 
-// Import models
-const User = require('./models/user');
-const Event = require('./models/event');
-
 const app = express();
 const PORT = process.env.PORT || 3001;
 
@@ -27,7 +23,7 @@ const sess = {
     sameSite: 'strict',
   },
   resave: false,
-  saveUninitialized: true,
+  saveUninitialized: false,
   store: new SequelizeStore({
     db: sequelize,
   }),
@@ -49,18 +45,14 @@ app.use(routes);
 // Error handling middleware
 app.use(errorHandler);
 
-// Sync the database models in the correct order
-sequelize.sync({ force: false })
-  .then(() => User.sync())
-  .then(() => Event.sync())
-  .then(() => {
-    app.listen(PORT, () => {
-      console.log(`Now listening on port ${PORT}`);
-      if (process.env.NODE_ENV !== 'production') {
-        console.log(`Click here to open: http://localhost:${PORT}`);
-      }
-    });
-  })
-  .catch(err => {
-    console.error('Unable to sync database:', err);
+// Sync the database models
+sequelize.sync({ force: false }).then(() => {
+  app.listen(PORT, () => {
+    console.log(`Now listening on port ${PORT}`);
+    if (process.env.NODE_ENV !== 'production') {
+      console.log(`Click here to open: http://localhost:${PORT}`);
+    }
   });
+}).catch(err => {
+  console.error('Unable to sync database:', err);
+});

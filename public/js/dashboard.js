@@ -66,9 +66,11 @@ const eventActionHandler = async (event) => {
       }
     } else if (event.target.classList.contains('edit-event')) {
       const eventCard = event.target.closest('.event-item');
+      const { format_date_for_input } = require('./path/to/helpers.js');
+
       document.querySelector('#event-title').value = eventCard.querySelector('h4').textContent;
       document.querySelector('#event-desc').value = eventCard.querySelector('p:nth-child(2)').textContent;
-      document.querySelector('#event-date').value = eventCard.querySelector('p:nth-child(3)').textContent.split(': ')[1];
+      document.querySelector('#event-date').value = format_date_for_input(eventCard.querySelector('p:nth-child(3)').textContent.split(': ')[1]);
       document.querySelector('#event-location').value = eventCard.querySelector('p:nth-child(4)').textContent.split(': ')[1];
       
       const form = document.querySelector('.new-event-form');
@@ -174,15 +176,10 @@ const displayRSVPEvents = (rsvpEvents) => {
     eventItem.classList.add('event-item');
     eventItem.innerHTML = `
       <h4>${rsvp.event.title}</h4>
-      <p><strong>Date:</strong> ${formatDate(rsvp.event.date)}</p>
+      <p><strong>Date:</strong> ${format_date_for_input(rsvp.event.date)}</p>
       <p><strong>Location:</strong> ${rsvp.event.location}</p>
       <a href="/event/${rsvp.event.id}" class="btn btn-sm btn-info">View Event</a>
     `;
     eventList.appendChild(eventItem);
   });
-};
-
-const formatDate = (dateString) => {
-  const options = { year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit' };
-  return new Date(dateString).toLocaleDateString(undefined, options);
 };
