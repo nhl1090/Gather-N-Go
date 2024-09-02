@@ -38,8 +38,6 @@ This project is licensed under the [MIT license](https://opensource.org/license/
 
 - ESLint.org
   - (https://eslint.org/docs/latest/use/configure/)
-- Eventbrite
-  - (https://www.eventbrite.com/platform/api#/introduction/about-our-api)
 - Expressjs.com
   - (https://expressjs.com/en/guide/using-middleware.html)
 - GitHub
