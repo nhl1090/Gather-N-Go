@@ -39,18 +39,18 @@ This project is licensed under the [MIT license](https://opensource.org/license/
 - ESLint.org
   - (https://eslint.org/docs/latest/use/configure/)
 - Expressjs.com
-  - (https://expressjs.com/en/guide/using-middleware.html)
+    - (https://expressjs.com/en/guide/using-middleware.html)
 - GitHub
-  - (https://github.com/expressjs/session#cookie)
+    - (https://github.com/expressjs/session#cookie)
 - Handlbarsjs.com
-  - (https://handlebarsjs.com/guide/expressions.html)
+    - (https://handlebarsjs.com/guide/expressions.html)
     - (https://handlebarsjs.com/guide/builtin-helpers.html)
     - (https://handlebarsjs.com/guide/partials.html#basic-partials)
 - MDN Web Docs
-  - (https://developer.mozilla.org/en-US/)
+    - (https://developer.mozilla.org/en-US/)
     - (https://developer.mozilla.org/en-US/docs/Glossary/MVC)
 - NPMJS.com
-  - (https://www.npmjs.com/package/express-handlebars)
+    - (https://www.npmjs.com/package/express-handlebars)
     - (https://www.npmjs.com/package/express-handlebars#helpers)
     - (https://www.npmjs.com/package/express-session)
     - (https://www.npmjs.com/package/connect-session-sequelize)
@@ -74,5 +74,6 @@ For any questions, please reach out to us at:
 - [ebaby-ak](https://github.com/ebaby-ak)
 - [mountainmancodes](https://github.com/Mountainmancodes)
 - [nhl1090](https://github.com/nhl1090)
+
 
 Thank you!
