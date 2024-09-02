@@ -1,105 +1,91 @@
-const loginFormHandler = async (event) => {
-  event.preventDefault();
+document.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.querySelector('.login-form');
+  const signupForm = document.querySelector('.signup-form');
 
-  const login = document.querySelector('#email-login').value.trim();
-  const password = document.querySelector('#password-login').value.trim();
-  const rememberMe = document.querySelector('#remember-me').checked;
+  const loginFormHandler = async (event) => {
+    event.preventDefault();
+    console.log('Login form submitted');
 
-  if (login && password) {
-    try {
-      const response = await fetch('/api/users/login', {
-        method: 'POST',
-        body: JSON.stringify({ login, password }),
-        headers: { 'Content-Type': 'application/json' },
-      });
+    const login = document.querySelector('#email-login').value.trim();
+    const password = document.querySelector('#password-login').value.trim();
 
-      const data = await response.json();
+    if (login && password) {
+      try {
+        console.log('Sending login request');
+        const response = await fetch('/api/users/login', {
+          method: 'POST',
+          body: JSON.stringify({ login, password }),
+          headers: { 'Content-Type': 'application/json' },
+        });
 
-      if (response.ok) {
-        if (rememberMe) {
-          localStorage.setItem('rememberedLogin', login);
-          localStorage.setItem('rememberedPassword', password);
+        const data = await response.json();
+        console.log('Login response:', data);
+
+        if (response.ok) {
+          console.log('Login successful, redirecting to:', data.redirect || '/dashboard');
+          window.location.href = data.redirect || '/dashboard';
         } else {
-          localStorage.removeItem('rememberedLogin');
-          localStorage.removeItem('rememberedPassword');
+          console.error('Login failed:', data.message);
+          alert(data.message || 'Failed to log in');
         }
-        if (data.redirect) {
-          window.location.href = data.redirect;
-        } else {
-          window.location.href = '/dashboard';
-        }
-      } else {
-        alert(data.message || 'Failed to log in');
+      } catch (error) {
+        console.error('Login error:', error);
+        alert('An error occurred during login. Please try again.');
       }
-    } catch (error) {
-      console.error('Login error:', error);
-      alert('An error occurred during login. Please try again.');
+    } else {
+      console.warn('Login or password is empty');
+      alert('Please enter both email/username and password');
     }
-  } else {
-    alert('Please enter both email/username and password');
-  }
-};
+  };
 
-const signupFormHandler = async (event) => {
-  event.preventDefault();
+  const signupFormHandler = async (event) => {
+    event.preventDefault();
+    console.log('Signup form submitted');
 
-  const username = document.querySelector('#username-signup').value.trim();
-  const email = document.querySelector('#email-signup').value.trim();
-  const password = document.querySelector('#password-signup').value.trim();
+    const username = document.querySelector('#username-signup').value.trim();
+    const email = document.querySelector('#email-signup').value.trim();
+    const password = document.querySelector('#password-signup').value.trim();
 
-  if (username && email && password) {
-    if (password.length < 8) {
-      alert('Password must be at least 8 characters long');
-      return;
-    }
+    if (username && email && password) {
+      try {
+        console.log('Sending signup request');
+        const response = await fetch('/api/users', {
+          method: 'POST',
+          body: JSON.stringify({ username, email, password }),
+          headers: { 'Content-Type': 'application/json' },
+        });
 
-    try {
-      const response = await fetch('/api/users', {
-        method: 'POST',
-        body: JSON.stringify({ username, email, password }),
-        headers: { 'Content-Type': 'application/json' },
-      });
+        const data = await response.json();
+        console.log('Signup response:', data);
 
-      const data = await response.json();
-
-      if (response.ok) {
-        if (data.redirect) {
-          window.location.href = data.redirect;
+        if (response.ok) {
+          console.log('Signup successful, redirecting to:', data.redirect || '/dashboard');
+          window.location.href = data.redirect || '/dashboard';
         } else {
-          window.location.href = '/dashboard';
-        }
-      } else {
-        if (data.errors) {
-          alert(data.errors.map(error => error.msg).join('\n'));
-        } else {
+          console.error('Signup failed:', data.message);
           alert(data.message || 'Failed to sign up');
         }
+      } catch (error) {
+        console.error('Signup error:', error);
+        alert('An error occurred during signup. Please try again.');
       }
-    } catch (error) {
-      console.error('Signup error:', error);
-      alert('An error occurred during signup. Please try again.');
+    } else {
+      console.warn('One or more signup fields are empty');
+      alert('Please fill in all fields');
     }
+  };
+
+  if (loginForm) {
+    console.log('Login form found, attaching event listener');
+    loginForm.addEventListener('submit', loginFormHandler);
   } else {
-    alert('Please fill in all fields');
+    console.warn('Login form not found');
   }
-};
 
-// Function to pre-fill login form if remembered credentials exist
-const prefillLoginForm = () => {
-  const emailLoginInput = document.querySelector('#email-login');
-  const passwordLoginInput = document.querySelector('#password-login');
-  const rememberMeCheckbox = document.querySelector('#remember-me');
-
-  const rememberedLogin = localStorage.getItem('rememberedLogin');
-  const rememberedPassword = localStorage.getItem('rememberedPassword');
-
-  if (emailLoginInput && passwordLoginInput && rememberMeCheckbox) {
-    if (rememberedLogin && rememberedPassword) {
-      emailLoginInput.value = rememberedLogin;
-      passwordLoginInput.value = rememberedPassword;
-      rememberMeCheckbox.checked = true;
-    }
+  if (signupForm) {
+    console.log('Signup form found, attaching event listener');
+    signupForm.addEventListener('submit', signupFormHandler);
   } else {
-    console.warn('Login form elements not found in the DOM.');
+    console.warn('Signup form not found');
   }
-};
+});
