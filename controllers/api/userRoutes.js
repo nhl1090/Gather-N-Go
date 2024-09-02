@@ -56,8 +56,10 @@ router.post('/', [
   body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
   body('bio').optional().trim(),
 ], async (req, res) => {
+  console.log('Signup route hit');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('Validation errors:', errors.array());
     return res.status(400).json({ errors: errors.array() });
   }
 
@@ -72,6 +74,7 @@ router.post('/', [
     });
 
     if (existingUser) {
+      console.log('User already exists');
       return res.status(400).json({ message: 'Username or email already exists' });
     }
 
@@ -88,6 +91,7 @@ router.post('/', [
 
     await req.session.save();
 
+    console.log('User created successfully, user_id:', userData.id);
     res.status(200).json({ user: userData, message: 'User created successfully', redirect: '/dashboard' });
   } catch (err) {
     console.error('Error creating user:', err);
@@ -100,8 +104,10 @@ router.post('/login', [
   body('login').trim().notEmpty(),
   body('password').isLength({ min: 8 }),
 ], async (req, res) => {
+  console.log('Login route hit');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('Validation errors:', errors.array());
     return res.status(400).json({ errors: errors.array() });
   }
 
@@ -115,11 +121,13 @@ router.post('/login', [
       }
     });
     if (!userData) {
+      console.log('User not found');
       return res.status(400).json({ message: 'Incorrect email/username or password, please try again' });
     }
 
     const validPassword = await userData.checkPassword(req.body.password);
     if (!validPassword) {
+      console.log('Invalid password');
       return res.status(400).json({ message: 'Incorrect email/username or password, please try again' });
     }
 
@@ -128,6 +136,7 @@ router.post('/login', [
 
     await req.session.save();
 
+    console.log('Login successful, user_id:', userData.id);
     res.json({ 
       user: {
         id: userData.id,
@@ -146,11 +155,14 @@ router.post('/login', [
 
 // User logout
 router.post('/logout', (req, res) => {
+  console.log('Logout route hit');
   if (req.session.logged_in) {
     req.session.destroy(() => {
+      console.log('Session destroyed');
       res.status(204).end();
     });
   } else {
+    console.log('No active session found');
     res.status(404).json({ message: 'No active session found' });
   }
 });
@@ -159,8 +171,10 @@ router.post('/logout', (req, res) => {
 router.put('/bio', withAuth, [
   body('bio').trim().escape()
 ], async (req, res) => {
+  console.log('Update bio route hit');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
+    console.log('Validation errors:', errors.array());
     return res.status(400).json({ errors: errors.array() });
   }
 
@@ -171,9 +185,11 @@ router.put('/bio', withAuth, [
     );
 
     if (updatedRows === 0) {
+      console.log('No user found with this ID');
       return res.status(404).json({ message: 'No user found with this ID!' });
     }
 
+    console.log('Bio updated successfully');
     res.status(200).json({ message: 'Bio updated successfully' });
   } catch (err) {
     console.error('Error updating bio:', err);
@@ -183,8 +199,10 @@ router.put('/bio', withAuth, [
 
 // UPDATE user profile picture
 router.post('/profile-picture', withAuth, upload.single('profile-pic'), async (req, res) => {
+  console.log('Update profile picture route hit');
   try {
     if (!req.file) {
+      console.log('No file uploaded');
       return res.status(400).json({ message: 'No file uploaded' });
     }
 
@@ -196,9 +214,11 @@ router.post('/profile-picture', withAuth, upload.single('profile-pic'), async (r
     );
 
     if (updatedRows === 0) {
+      console.log('No user found with this ID');
       return res.status(404).json({ message: 'No user found with this ID!' });
     }
 
+    console.log('Profile picture updated successfully');
     res.status(200).json({ message: 'Profile picture updated successfully', profile_picture: profilePicturePath });
   } catch (err) {
     console.error('Error uploading profile picture:', err);
