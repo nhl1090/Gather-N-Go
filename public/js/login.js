@@ -2,6 +2,8 @@ document.addEventListener('DOMContentLoaded', () => {
   const loginForm = document.querySelector('.login-form');
   const signupForm = document.querySelector('.signup-form');
 
+  console.log('DOM content loaded');
+
   const loginFormHandler = async (event) => {
     event.preventDefault();
     console.log('Login form submitted');
@@ -23,7 +25,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           console.log('Login successful, redirecting to:', data.redirect || '/dashboard');
-          window.location.href = data.redirect || '/dashboard';
+          document.location.replace(data.redirect || '/dashboard');
         } else {
           console.error('Login failed:', data.message);
           alert(data.message || 'Failed to log in');
@@ -60,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (response.ok) {
           console.log('Signup successful, redirecting to:', data.redirect || '/dashboard');
-          window.location.href = data.redirect || '/dashboard';
+          document.location.replace(data.redirect || '/dashboard');
         } else {
           console.error('Signup failed:', data.message);
           alert(data.message || 'Failed to sign up');
