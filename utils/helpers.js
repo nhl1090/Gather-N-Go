@@ -34,5 +34,16 @@ module.exports = {
       return new_str + "...";
     }
     return str;
-  }
+  },
+
+  format_date_for_input: (date) => {
+    const dateObject = new Date(date);
+    const year = dateObject.getFullYear();
+    const month = (dateObject.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based, so add 1
+    const day = dateObject.getDate().toString().padStart(2, '0');
+    const hours = dateObject.getHours().toString().padStart(2, '0');
+    const minutes = dateObject.getMinutes().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}T${hours}:${minutes}`;
+  },
 };

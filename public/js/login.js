@@ -86,16 +86,20 @@ const signupFormHandler = async (event) => {
 
 // Function to pre-fill login form if remembered credentials exist
 const prefillLoginForm = () => {
+  const emailLoginInput = document.querySelector('#email-login');
+  const passwordLoginInput = document.querySelector('#password-login');
+  const rememberMeCheckbox = document.querySelector('#remember-me');
+
   const rememberedLogin = localStorage.getItem('rememberedLogin');
   const rememberedPassword = localStorage.getItem('rememberedPassword');
-  
-  if (rememberedLogin && rememberedPassword) {
-    document.querySelector('#email-login').value = rememberedLogin;
-    document.querySelector('#password-login').value = rememberedPassword;
-    document.querySelector('#remember-me').checked = true;
+
+  if (emailLoginInput && passwordLoginInput && rememberMeCheckbox) {
+    if (rememberedLogin && rememberedPassword) {
+      emailLoginInput.value = rememberedLogin;
+      passwordLoginInput.value = rememberedPassword;
+      rememberMeCheckbox.checked = true;
+    }
+  } else {
+    console.warn('Login form elements not found in the DOM.');
   }
 };
-
-document.addEventListener('DOMContentLoaded', prefillLoginForm);
-document.querySelector('.login-form')?.addEventListener('submit', loginFormHandler);
-document.querySelector('.signup-form')?.addEventListener('submit', signupFormHandler);
