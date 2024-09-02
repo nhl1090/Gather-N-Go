@@ -49,7 +49,7 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// CREATE a new user
+// CREATE a new user (signup)
 router.post('/', [
   body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
   body('email').isEmail().withMessage('Please provide a valid email address'),
@@ -83,11 +83,12 @@ router.post('/', [
       profile_picture: null
     });
 
-    req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
-      res.status(200).json({ user: userData, message: 'User created successfully', redirect: '/dashboard' });
-    });
+    req.session.user_id = userData.id;
+    req.session.logged_in = true;
+
+    await req.session.save();
+
+    res.status(200).json({ user: userData, message: 'User created successfully', redirect: '/dashboard' });
   } catch (err) {
     console.error('Error creating user:', err);
     res.status(500).json({ message: 'Server error while creating user', error: err.message });
@@ -122,19 +123,20 @@ router.post('/login', [
       return res.status(400).json({ message: 'Incorrect email/username or password, please try again' });
     }
 
-    req.session.save(() => {
-      req.session.user_id = userData.id;
-      req.session.logged_in = true;
-      res.json({ 
-        user: {
-          id: userData.id,
-          username: userData.username,
-          email: userData.email,
-          profile_picture: userData.profile_picture
-        }, 
-        message: 'You are now logged in!',
-        redirect: '/dashboard'
-      });
+    req.session.user_id = userData.id;
+    req.session.logged_in = true;
+
+    await req.session.save();
+
+    res.json({ 
+      user: {
+        id: userData.id,
+        username: userData.username,
+        email: userData.email,
+        profile_picture: userData.profile_picture
+      }, 
+      message: 'You are now logged in!',
+      redirect: '/dashboard'
     });
   } catch (err) {
     console.error('Login error:', err);

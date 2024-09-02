@@ -3,7 +3,6 @@ const loginFormHandler = async (event) => {
 
   const login = document.querySelector('#email-login').value.trim();
   const password = document.querySelector('#password-login').value.trim();
-  const rememberMe = document.querySelector('#remember-me').checked;
 
   if (login && password) {
     try {
@@ -16,18 +15,7 @@ const loginFormHandler = async (event) => {
       const data = await response.json();
 
       if (response.ok) {
-        if (rememberMe) {
-          localStorage.setItem('rememberedLogin', login);
-          localStorage.setItem('rememberedPassword', password);
-        } else {
-          localStorage.removeItem('rememberedLogin');
-          localStorage.removeItem('rememberedPassword');
-        }
-        if (data.redirect) {
-          window.location.href = data.redirect;
-        } else {
-          window.location.href = '/dashboard';
-        }
+        document.location.replace('/dashboard');
       } else {
         alert(data.message || 'Failed to log in');
       }
@@ -35,8 +23,6 @@ const loginFormHandler = async (event) => {
       console.error('Login error:', error);
       alert('An error occurred during login. Please try again.');
     }
-  } else {
-    alert('Please enter both email/username and password');
   }
 };
 
@@ -48,11 +34,6 @@ const signupFormHandler = async (event) => {
   const password = document.querySelector('#password-signup').value.trim();
 
   if (username && email && password) {
-    if (password.length < 8) {
-      alert('Password must be at least 8 characters long');
-      return;
-    }
-
     try {
       const response = await fetch('/api/users', {
         method: 'POST',
@@ -63,43 +44,16 @@ const signupFormHandler = async (event) => {
       const data = await response.json();
 
       if (response.ok) {
-        if (data.redirect) {
-          window.location.href = data.redirect;
-        } else {
-          window.location.href = '/dashboard';
-        }
+        document.location.replace('/dashboard');
       } else {
-        if (data.errors) {
-          alert(data.errors.map(error => error.msg).join('\n'));
-        } else {
-          alert(data.message || 'Failed to sign up');
-        }
+        alert(data.message || 'Failed to sign up');
       }
     } catch (error) {
       console.error('Signup error:', error);
       alert('An error occurred during signup. Please try again.');
     }
-  } else {
-    alert('Please fill in all fields');
   }
 };
 
-// Function to pre-fill login form if remembered credentials exist
-const prefillLoginForm = () => {
-  const emailLoginInput = document.querySelector('#email-login');
-  const passwordLoginInput = document.querySelector('#password-login');
-  const rememberMeCheckbox = document.querySelector('#remember-me');
-
-  const rememberedLogin = localStorage.getItem('rememberedLogin');
-  const rememberedPassword = localStorage.getItem('rememberedPassword');
-
-  if (emailLoginInput && passwordLoginInput && rememberMeCheckbox) {
-    if (rememberedLogin && rememberedPassword) {
-      emailLoginInput.value = rememberedLogin;
-      passwordLoginInput.value = rememberedPassword;
-      rememberMeCheckbox.checked = true;
-    }
-  } else {
-    console.warn('Login form elements not found in the DOM.');
-  }
-};
+document.querySelector('.login-form').addEventListener('submit', loginFormHandler);
+document.querySelector('.signup-form').addEventListener('submit', signupFormHandler);
