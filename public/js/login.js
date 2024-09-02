@@ -78,14 +78,10 @@ document.addEventListener('DOMContentLoaded', () => {
   if (loginForm) {
     console.log('Login form found, attaching event listener');
     loginForm.addEventListener('submit', loginFormHandler);
-  } else {
-    console.warn('Login form not found');
   }
 
   if (signupForm) {
     console.log('Signup form found, attaching event listener');
     signupForm.addEventListener('submit', signupFormHandler);
-  } else {
-    console.warn('Signup form not found');
   }
 });
