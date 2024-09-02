@@ -53,6 +53,7 @@ router.get('/signup', (req, res) => {
 router.get('/dashboard', withAuth, async (req, res) => {
   try {
     console.log('Dashboard route hit');
+    console.log('Session user_id:', req.session.user_id);
     const userData = await User.findByPk(req.session.user_id, {
       attributes: { exclude: ['password'] },
       include: [
@@ -84,6 +85,7 @@ router.get('/dashboard', withAuth, async (req, res) => {
 router.get('/profile', withAuth, async (req, res) => {
   try {
     console.log('Profile route hit');
+    console.log('Session user_id:', req.session.user_id);
     const userData = await User.findByPk(req.session.user_id, {
       attributes: { exclude: ['password'] },
       include: [
@@ -140,6 +142,8 @@ router.get('/event/:id', async (req, res) => {
     }
 
     console.log(`Rendering event: ${event.title}`);
+    console.log('User logged in:', req.session.logged_in);
+    console.log('User RSVP status:', hasRSVP);
     res.render('event', {
       ...event,
       logged_in: req.session.logged_in,
@@ -182,6 +186,12 @@ router.get('/search', async (req, res) => {
     console.error('Error in search route:', err);
     res.status(500).render('error', { message: 'Error performing search. Please try again later.' });
   }
+});
+
+// Catch-all route for undefined routes
+router.get('*', (req, res) => {
+  console.log('404 - Route not found');
+  res.status(404).render('error', { message: 'Page not found.' });
 });
 
 module.exports = router;
