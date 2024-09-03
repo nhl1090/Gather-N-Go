@@ -26,38 +26,50 @@ document.addEventListener('DOMContentLoaded', () => {
 const newEventHandler = async (event) => {
   event.preventDefault();
 
+  const submitButton = event.target.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+
   const title = document.querySelector('#event-title').value.trim();
   const description = document.querySelector('#event-desc').value.trim();
   const date = document.querySelector('#event-date').value.trim();
   const location = document.querySelector('#event-location').value.trim();
 
   if (title && description && date && location) {
-    const response = await fetch(`/api/events`, {
-      method: 'POST',
-      body: JSON.stringify({ title, description, date, location }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    try {
+      const response = await fetch(`/api/events`, {
+        method: 'POST',
+        body: JSON.stringify({ title, description, date, location }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    if (response.ok) {
-      document.location.replace('/dashboard');
-    } else {
-      alert('Failed to create event');
+      if (response.ok) {
+        document.location.replace('/dashboard');
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to create event: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error creating event:', error);
+      alert('An error occurred while creating the event. Please try again.');
+    } finally {
+      submitButton.disabled = false;
     }
+  } else {
+    alert('Please fill in all fields');
+    submitButton.disabled = false;
   }
 };
 
 const eventActionHandler = async (event) => {
   if (event.target.hasAttribute('data-id')) {
     const id = event.target.getAttribute('data-id');
-
     if (event.target.classList.contains('delete-event')) {
       if (confirm('Are you sure you want to delete this event?')) {
         const response = await fetch(`/api/events/${id}`, {
           method: 'DELETE',
         });
-
         if (response.ok) {
           document.location.replace('/dashboard');
         } else {
@@ -66,17 +78,15 @@ const eventActionHandler = async (event) => {
       }
     } else if (event.target.classList.contains('edit-event')) {
       const eventCard = event.target.closest('.event-item');
-      const { format_date_for_input } = require('./path/to/helpers.js');
-
       document.querySelector('#event-title').value = eventCard.querySelector('h4').textContent;
       document.querySelector('#event-desc').value = eventCard.querySelector('p:nth-child(2)').textContent;
-      document.querySelector('#event-date').value = format_date_for_input(eventCard.querySelector('p:nth-child(3)').textContent.split(': ')[1]);
+      document.querySelector('#event-date').value = formatDateForInput(eventCard.querySelector('p:nth-child(3)').textContent.split(': ')[1]);
       document.querySelector('#event-location').value = eventCard.querySelector('p:nth-child(4)').textContent.split(': ')[1];
-      
+     
       const form = document.querySelector('.new-event-form');
       form.removeEventListener('submit', newEventHandler);
       form.addEventListener('submit', (e) => updateEventHandler(e, id));
-      
+     
       document.querySelector('.new-event-form button').textContent = 'Update Event';
     }
   }
@@ -85,33 +95,45 @@ const eventActionHandler = async (event) => {
 const updateEventHandler = async (event, id) => {
   event.preventDefault();
 
+  const submitButton = event.target.querySelector('button[type="submit"]');
+  submitButton.disabled = true;
+
   const title = document.querySelector('#event-title').value.trim();
   const description = document.querySelector('#event-desc').value.trim();
   const date = document.querySelector('#event-date').value.trim();
   const location = document.querySelector('#event-location').value.trim();
 
   if (title && description && date && location) {
-    const response = await fetch(`/api/events/${id}`, {
-      method: 'PUT',
-      body: JSON.stringify({ title, description, date, location }),
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    try {
+      const response = await fetch(`/api/events/${id}`, {
+        method: 'PUT',
+        body: JSON.stringify({ title, description, date, location }),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
 
-    if (response.ok) {
-      document.location.replace('/dashboard');
-    } else {
-      alert('Failed to update event');
+      if (response.ok) {
+        document.location.replace('/dashboard');
+      } else {
+        const errorData = await response.json();
+        alert(`Failed to update event: ${errorData.message}`);
+      }
+    } catch (error) {
+      console.error('Error updating event:', error);
+      alert('An error occurred while updating the event. Please try again.');
+    } finally {
+      submitButton.disabled = false;
     }
+  } else {
+    alert('Please fill in all fields');
+    submitButton.disabled = false;
   }
 };
 
 const updateBioHandler = async (event) => {
   event.preventDefault();
-
   const bio = document.querySelector('#user-bio').value.trim();
-
   const response = await fetch(`/api/users/bio`, {
     method: 'PUT',
     body: JSON.stringify({ bio }),
@@ -119,7 +141,6 @@ const updateBioHandler = async (event) => {
       'Content-Type': 'application/json',
     },
   });
-
   if (response.ok) {
     document.location.reload();
   } else {
@@ -129,16 +150,13 @@ const updateBioHandler = async (event) => {
 
 const uploadProfilePicHandler = async (event) => {
   event.preventDefault();
-
   const fileInput = document.querySelector('#profile-pic');
   const formData = new FormData();
   formData.append('profile-pic', fileInput.files[0]);
-
   const response = await fetch(`/api/users/profile-picture`, {
     method: 'POST',
     body: formData,
   });
-
   if (response.ok) {
     document.location.reload();
   } else {
@@ -166,20 +184,24 @@ const displayRSVPEvents = (rsvpEvents) => {
     rsvpContainer.style.display = 'none';
     return;
   }
-
   rsvpContainer.style.display = 'block';
   const eventList = rsvpContainer.querySelector('.event-list');
   eventList.innerHTML = '';
-
   rsvpEvents.forEach(rsvp => {
     const eventItem = document.createElement('div');
     eventItem.classList.add('event-item');
     eventItem.innerHTML = `
       <h4>${rsvp.event.title}</h4>
-      <p><strong>Date:</strong> ${format_date_for_input(rsvp.event.date)}</p>
+      <p><strong>Date:</strong> ${new Date(rsvp.event.date).toLocaleDateString()}</p>
       <p><strong>Location:</strong> ${rsvp.event.location}</p>
       <a href="/event/${rsvp.event.id}" class="btn btn-sm btn-info">View Event</a>
     `;
     eventList.appendChild(eventItem);
   });
+};
+
+// Helper function to format date for input
+const formatDateForInput = (dateString) => {
+  const date = new Date(dateString);
+  return date.toISOString().slice(0, 16);
 };
