@@ -8,7 +8,8 @@ document.addEventListener('DOMContentLoaded', () => {
     newEventForm.addEventListener('submit', (event) => {
       event.preventDefault();
 
-      const id = document.querySelector('#event-id').value; 
+      const idElement = document.querySelector('#event-id');
+      const id = idElement ? idElement.value : null;
 
       if (id) {
         updateEventHandler(event, id);
