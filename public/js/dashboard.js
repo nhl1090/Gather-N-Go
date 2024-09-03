@@ -5,7 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const uploadForm = document.querySelector('.upload-form');
 
   if (newEventForm) {
-    newEventForm.addEventListener('submit', newEventHandler);
+    newEventForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const id = document.querySelector('#event-id').value; 
+
+      if (id) {
+        updateEventHandler(event, id);
+      } else {
+        newEventHandler(event); 
+      }
+    });
   }
 
   if (eventList) {
@@ -78,6 +88,10 @@ const eventActionHandler = async (event) => {
       }
     } else if (event.target.classList.contains('edit-event')) {
       const eventCard = event.target.closest('.event-item');
+      const format_date_for_input = (dateStr) => {
+        const date = new Date(dateStr);
+        return date.toISOString().slice(0, 16);};
+
       document.querySelector('#event-title').value = eventCard.querySelector('h4').textContent;
       document.querySelector('#event-desc').value = eventCard.querySelector('p:nth-child(2)').textContent;
       document.querySelector('#event-date').value = formatDateForInput(eventCard.querySelector('p:nth-child(3)').textContent.split(': ')[1]);
