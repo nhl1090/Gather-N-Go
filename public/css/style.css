@@ -143,8 +143,27 @@ header {
     transition: transform 0.3s ease;
 }
 
+@keyframes swivel {
+    0% {
+        transform: rotate(0deg);
+    }
+    25% {
+        transform: rotate(20deg);
+    }
+    50% {
+        transform: rotate(-20deg);
+    }
+    75% {
+        transform: rotate(20deg);
+    }
+    100% {
+        transform: rotate(0deg);
+    }
+}
+
 .login-button:hover .key-icon {
     transform: rotate(-45deg);
+    animation: swivel 0.5s ease-in-out;
 }
 
 #logout {
