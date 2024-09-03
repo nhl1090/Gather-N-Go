@@ -23,6 +23,7 @@ const upload = multer({ storage: storage });
 // GET all users
 router.get('/', async (req, res) => {
   try {
+    console.log('GET all users route hit');
     const userData = await User.findAll({
       attributes: { exclude: ['password'] }
     });
@@ -36,10 +37,12 @@ router.get('/', async (req, res) => {
 // GET a single user by ID
 router.get('/:id', async (req, res) => {
   try {
+    console.log(`GET user by ID route hit for ID: ${req.params.id}`);
     const userData = await User.findByPk(req.params.id, {
       attributes: { exclude: ['password'] }
     });
     if (!userData) {
+      console.log('User not found');
       return res.status(404).json({ message: 'No user found with this ID!' });
     }
     res.status(200).json(userData);
@@ -49,14 +52,14 @@ router.get('/:id', async (req, res) => {
   }
 });
 
-// CREATE a new user (signup)
+// CREATE a new user
 router.post('/', [
   body('username').trim().isLength({ min: 3 }).withMessage('Username must be at least 3 characters long'),
   body('email').isEmail().withMessage('Please provide a valid email address'),
   body('password').isLength({ min: 8 }).withMessage('Password must be at least 8 characters long'),
   body('bio').optional().trim(),
 ], async (req, res) => {
-  console.log('Signup route hit');
+  console.log('CREATE user route hit');
   const errors = validationResult(req);
   if (!errors.isEmpty()) {
     console.log('Validation errors:', errors.array());
