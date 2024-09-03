@@ -214,9 +214,3 @@ const displayRSVPEvents = (rsvpEvents) => {
     eventList.appendChild(eventItem);
   });
 };
-
-// Helper function to format date for input
-const formatDateForInput = (dateString) => {
-  const date = new Date(dateString);
-  return date.toISOString().slice(0, 16);
-};
