@@ -313,6 +313,10 @@ h1 {
     border-radius: 50%;
 }
 
+.dashboard-section {
+    display: block !important;
+}
+
 /* Footer Styling */
 footer {
     background-color: var(--text-color);
