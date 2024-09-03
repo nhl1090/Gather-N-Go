@@ -92,10 +92,12 @@ router.post('/', [
     req.session.user_id = userData.id;
     req.session.logged_in = true;
 
-    await req.session.save();
+    await req.session.save(() => {
+      console.log('Session after save:', req.session);
+      return res.status(200).json({ user: userData, message: 'You are now signed up!', redirect: '/dashboard' });
+    });
 
     console.log('User created successfully, user_id:', userData.id);
-    res.status(200).json({ user: userData, message: 'User created successfully', redirect: '/dashboard' });
   } catch (err) {
     console.error('Error creating user:', err);
     res.status(500).json({ message: 'Server error while creating user', error: err.message });
@@ -137,19 +139,13 @@ router.post('/login', [
     req.session.user_id = userData.id;
     req.session.logged_in = true;
 
-    await req.session.save();
-
-    console.log('Login successful, user_id:', userData.id);
-    res.json({ 
-      user: {
-        id: userData.id,
-        username: userData.username,
-        email: userData.email,
-        profile_picture: userData.profile_picture
-      }, 
-      message: 'You are now logged in!',
-      redirect: '/dashboard'
-    });
+    await req.session.save(() => {
+      console.log('Session after save:', req.session);
+      return res.json({ user: userData, message: 'You are now logged in!', redirect: '/dashboard' });
+  });
+  
+  console.log('Login successful, user_id:', userData.id);
+  
   } catch (err) {
     console.error('Login error:', err);
     res.status(500).json({ message: 'Server error during login' });

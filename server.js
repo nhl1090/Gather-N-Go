@@ -19,7 +19,7 @@ const sess = {
   cookie: {
     maxAge: 24 * 60 * 60 * 1000, // 1 day
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production',
+    secure: process.env.NODE_ENV === 'production' ? false : true,
     sameSite: 'strict',
   },
   resave: false,
@@ -30,6 +30,11 @@ const sess = {
 };
 
 app.use(session(sess));
+
+app.use((req, res, next) => {
+  console.log('Session data:', req.session);
+  next();
+});
 
 // Inform Express.js on which template engine to use
 app.engine('handlebars', hbs.engine);
@@ -47,6 +52,14 @@ app.use(errorHandler);
 
 // Sync the database models
 sequelize.sync({ force: false }).then(() => {
+  sequelize.authenticate()
+  .then(() => {
+    console.log('Database connection established successfully.');
+  })
+  .catch(err => {
+    console.error('Unable to connect to the database:', err);
+  });
+
   app.listen(PORT, () => {
     console.log(`Now listening on port ${PORT}`);
     if (process.env.NODE_ENV !== 'production') {
