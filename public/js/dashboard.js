@@ -168,14 +168,26 @@ const uploadProfilePicHandler = async (event) => {
   const fileInput = document.querySelector('#profile-pic');
   const formData = new FormData();
   formData.append('profile-pic', fileInput.files[0]);
-  const response = await fetch(`/api/users/profile-picture`, {
-    method: 'POST',
-    body: formData,
-  });
-  if (response.ok) {
-    document.location.reload();
-  } else {
-    alert('Failed to upload profile picture');
+
+  try {
+    const response = await fetch(`/api/users/profile-picture`, {
+      method: 'POST',
+      body: formData,
+    });
+
+    if (response.ok) {
+      const result = await response.json(); 
+      const imagePath = result.profile_picture_path;
+
+      // Update the src of the image to show the uploaded file
+      const profilePicElement = document.querySelector('.profile-pic');
+      profilePicElement.src = imagePath; // Set the image path to the correct one
+    } else {
+      alert('Failed to upload profile picture');
+    }
+  } catch (error) {
+    console.error('Error uploading profile picture:', error);
+    alert('An error occurred while uploading the profile picture. Please try again.');
   }
 };
 

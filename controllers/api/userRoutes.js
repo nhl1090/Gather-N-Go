@@ -218,7 +218,7 @@ router.post('/profile-picture', withAuth, upload.single('profile-pic'), async (r
     }
 
     console.log('Profile picture updated successfully');
-    res.status(200).json({ message: 'Profile picture updated successfully', profile_picture: profilePicturePath });
+    res.status(200).json({ message: 'Profile picture updated successfully', profile_picture_path: profilePicturePath });
   } catch (err) {
     console.error('Error uploading profile picture:', err);
     res.status(500).json({ message: 'Server error while updating profile picture' });
