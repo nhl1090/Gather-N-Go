@@ -161,8 +161,9 @@ header {
     }
 }
 
-.login-button:hover .key-icon {
-    transform: rotate(-45deg);
+
+.login-button:hover .fa-key {
+    transform: rotate(45deg);
     animation: swivel 0.5s ease-in-out;
 }
 
