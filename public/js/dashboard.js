@@ -5,7 +5,17 @@ document.addEventListener('DOMContentLoaded', () => {
   const uploadForm = document.querySelector('.upload-form');
 
   if (newEventForm) {
-    newEventForm.addEventListener('submit', newEventHandler);
+    newEventForm.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const id = document.querySelector('#event-id').value; 
+
+      if (id) {
+        updateEventHandler(event, id);
+      } else {
+        newEventHandler(event); 
+      }
+    });
   }
 
   if (eventList) {
