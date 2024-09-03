@@ -1,4 +1,8 @@
-console.log('login.js loaded');
+document.addEventListener('DOMContentLoaded', () => {
+  const loginForm = document.querySelector('.login-form');
+  const signupForm = document.querySelector('.signup-form');
+
+  console.log('login.js loaded');
 
 const loginFormHandler = async (event) => {
   event.preventDefault();
@@ -73,23 +77,13 @@ const signupFormHandler = async (event) => {
   }
 };
 
-document.addEventListener('DOMContentLoaded', () => {
-  console.log('DOM content loaded');
-  
-  const loginForm = document.querySelector('.login-form');
-  const signupForm = document.querySelector('.signup-form');
-
-  if (loginForm) {
+if (loginForm) {
     console.log('Login form found, attaching event listener');
     loginForm.addEventListener('submit', loginFormHandler);
-  } else {
-    console.warn('Login form not found');
   }
 
   if (signupForm) {
     console.log('Signup form found, attaching event listener');
     signupForm.addEventListener('submit', signupFormHandler);
-  } else {
-    console.warn('Signup form not found');
   }
 });

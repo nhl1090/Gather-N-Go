@@ -13,7 +13,7 @@ if (process.env.DATABASE_URL) {
         rejectUnauthorized: false
       }
     },
-    logging: false
+    logging: console.log
   });
 } else {
   sequelize = new Sequelize(
